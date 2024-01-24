@@ -4,6 +4,8 @@
 
 #include "../h/MemoryAllocator.h"
 
+Element* MemoryAllocator::freeHead = nullptr;
+
 void MemoryAllocator::initialize() {
     freeHead = (Element*)HEAP_START_ADDR;
     freeHead->next = nullptr;
@@ -19,7 +21,7 @@ int MemoryAllocator::mem_free(void *ptr) {
     else{
         for (cur = freeHead; cur->next != nullptr && ptr > (char*)(cur->next); cur = cur->next){}
     }
-    Element* newSeg = ((Element*)((char*)adr - sizeof(FreeMem));
+    Element* newSeg = ((Element*)((char*)ptr - sizeof(Element)));
     if (cur != nullptr)
         newSeg->next = cur->next;
     else
@@ -73,4 +75,3 @@ int MemoryAllocator::tryToJoin(Element *cur) {
     else
         return 0;
 }
-
